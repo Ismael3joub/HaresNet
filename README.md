@@ -36,18 +36,17 @@ Wi-Fi router with enterprise-grade features, using:
 
 ## Project Structure
 
+```
 HaresNet/
-├── haresnet-backend/     # Python Flask backend
-│   ├── app/              # API modules
-│   ├── scripts/          # Setup scripts
+├── haresnet-backend/
+│   ├── app/
+│   ├── scripts/
 │   ├── Dockerfile
 │   └── docker-compose.yml
-│
-└── guardian-angel/       # React frontend dashboard
-├── src/
-└── public/
-
----
+└── guardian-angel/
+    ├── src/
+    └── public/
+```
 
 ## Requirements
 
