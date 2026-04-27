@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+instance/
+*.db
+*.sqlite
+
+# Node
+node_modules/
+dist/
+.env
+
+# Logs
+*.log
+
+# Docker
+*.override.yml
+
+# OS
+.DS_Store
+*~
+.vscode/

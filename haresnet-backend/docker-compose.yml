@@ -1,0 +1,74 @@
+services:
+  influxdb:
+    image: influxdb:2.7
+    container_name: haresnet-influxdb
+    restart: unless-stopped
+    ports:
+      - "8086:8086"
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=haresnet_admin_password
+      - DOCKER_INFLUXDB_INIT_ORG=haresnet
+      - DOCKER_INFLUXDB_INIT_BUCKET=traffic
+      - DOCKER_INFLUXDB_INIT_RETENTION=30d
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=haresnet_super_secret_token_change_in_production
+    volumes:
+      - influxdb-data:/var/lib/influxdb2
+      - influxdb-config:/etc/influxdb2
+
+  haresnet-backend:
+    build:
+      context: .
+      network: host
+    container_name: haresnet-router
+    network_mode: host
+    privileged: true
+    restart: unless-stopped
+    depends_on:
+      - influxdb
+
+    environment:
+      - FLASK_ENV=production
+      - SECRET_KEY=change-this-in-production-to-random-string
+      - JWT_SECRET_KEY=change-this-jwt-secret-in-production
+      - PORT=80
+      - TZ=Africa/Cairo
+      - TIMEZONE=Africa/Cairo
+      - WAN_INTERFACE=enp3s0
+      - LAN_INTERFACE=wlx48022a42d20b
+      - LAN_IP=192.168.10.1
+      - LAN_NETMASK=255.255.255.0
+      - DHCP_RANGE_START=192.168.10.100
+      - DHCP_RANGE_END=192.168.10.200
+      # InfluxDB configuration
+      - INFLUXDB_URL=http://localhost:8086
+      - INFLUXDB_TOKEN=haresnet_super_secret_token_change_in_production
+      - INFLUXDB_ORG=haresnet
+      - INFLUXDB_BUCKET=traffic
+
+      # NTFY Configuration
+      - NTFY_TOPIC=${NTFY_TOPIC:-haresnet_admin}
+
+    # Bind mounts and persistent volumes
+    volumes:
+      - ./:/app
+      - haresnet-data:/app/instance
+      - hostapd-config:/etc/hostapd
+      - dhcp-leases:/var/lib/misc
+      - haresnet-logs:/var/log
+      - /etc/localtime:/etc/localtime:ro
+      - /usr/share/zoneinfo:/usr/share/zoneinfo:ro
+
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+      - SYS_MODULE
+
+volumes:
+  haresnet-data:
+  hostapd-config:
+  dhcp-leases:
+  haresnet-logs:
+  influxdb-data:
+  influxdb-config:

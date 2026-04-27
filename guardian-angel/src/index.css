@@ -1,0 +1,209 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* HaresNet Network Management - Dark Technical Theme */
+
+@layer base {
+  :root {
+    --background: 222 47% 6%;
+    --foreground: 210 40% 98%;
+
+    --card: 222 47% 8%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222 47% 10%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 187 80% 50%;
+    --primary-foreground: 222 47% 6%;
+
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217 33% 14%;
+    --muted-foreground: 215 20% 55%;
+
+    --accent: 187 80% 50%;
+    --accent-foreground: 222 47% 6%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 210 40% 98%;
+
+    --success: 142 76% 36%;
+    --success-foreground: 210 40% 98%;
+
+    --warning: 38 92% 50%;
+    --warning-foreground: 222 47% 6%;
+
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 187 80% 50%;
+
+    --radius: 0.75rem;
+
+    /* Custom Network Theme Colors */
+    --network-cyan: 187 80% 50%;
+    --network-cyan-glow: 187 100% 60%;
+    --network-dark: 222 47% 6%;
+    --network-darker: 222 47% 4%;
+    --network-card: 222 47% 8%;
+    --network-card-hover: 222 47% 10%;
+    --network-border: 217 33% 17%;
+    --network-border-glow: 187 80% 30%;
+    
+    /* Status Colors */
+    --status-online: 142 76% 36%;
+    --status-offline: 0 72% 51%;
+    --status-blocked: 0 72% 51%;
+    --status-warning: 38 92% 50%;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(187 80% 50%) 0%, hsl(199 89% 48%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(222 47% 10%) 0%, hsl(222 47% 6%) 100%);
+    --gradient-glow: radial-gradient(circle at 50% 0%, hsl(187 80% 50% / 0.15) 0%, transparent 50%);
+
+    /* Shadows */
+    --shadow-glow: 0 0 20px hsl(187 80% 50% / 0.2);
+    --shadow-card: 0 4px 24px hsl(0 0% 0% / 0.3);
+    --shadow-elevated: 0 8px 32px hsl(0 0% 0% / 0.4);
+
+    --sidebar-background: 222 47% 5%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 187 80% 50%;
+    --sidebar-primary-foreground: 222 47% 6%;
+    --sidebar-accent: 217 33% 14%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 217 33% 15%;
+    --sidebar-ring: 187 80% 50%;
+  }
+
+  .dark {
+    /* Already dark by default */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Custom scrollbar for network theme */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--muted));
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary) / 0.5);
+  }
+}
+
+@layer components {
+  /* Glass-morphism card effect */
+  .glass-card {
+    @apply bg-card/80 backdrop-blur-xl border border-border/50;
+    box-shadow: var(--shadow-card);
+  }
+
+  .glass-card-hover {
+    @apply glass-card transition-all duration-300;
+  }
+
+  .glass-card-hover:hover {
+    @apply border-primary/30;
+    box-shadow: var(--shadow-glow);
+  }
+
+  /* Glow effects */
+  .glow-text {
+    text-shadow: 0 0 20px hsl(var(--primary) / 0.5);
+  }
+
+  .glow-border {
+    box-shadow: 0 0 15px hsl(var(--primary) / 0.3), inset 0 0 15px hsl(var(--primary) / 0.1);
+  }
+
+  /* Status indicators */
+  .status-dot {
+    @apply w-2 h-2 rounded-full;
+  }
+
+  .status-online {
+    @apply bg-green-500;
+    box-shadow: 0 0 8px hsl(142 76% 36% / 0.6);
+  }
+
+  .status-offline {
+    @apply bg-red-500;
+    box-shadow: 0 0 8px hsl(0 72% 51% / 0.6);
+  }
+
+  .status-blocked {
+    @apply bg-red-500;
+    box-shadow: 0 0 8px hsl(0 72% 51% / 0.6);
+  }
+
+  /* Network grid pattern */
+  .network-grid {
+    background-image: 
+      linear-gradient(hsl(var(--border) / 0.3) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--border) / 0.3) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* Stat card gradient */
+  .stat-card {
+    @apply relative overflow-hidden;
+    background: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(var(--network-darker)) 100%);
+  }
+
+  .stat-card::before {
+    content: '';
+    @apply absolute inset-0 opacity-0 transition-opacity duration-300;
+    background: var(--gradient-glow);
+  }
+
+  .stat-card:hover::before {
+    @apply opacity-100;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: var(--gradient-primary);
+  }
+
+  .animate-pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes glow {
+    from {
+      box-shadow: 0 0 5px hsl(var(--primary) / 0.2);
+    }
+    to {
+      box-shadow: 0 0 20px hsl(var(--primary) / 0.4);
+    }
+  }
+}
